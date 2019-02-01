@@ -56,7 +56,7 @@ class Kinematic():
     # ******************************************************************
     #  * Set End frame
     #  *****************************************************************
-    def set_TF(self, T):
+    def setTF(self, T):
         for i in range(4):
             for j in range(4):
                 self._TF[i, j] = T[i, j]
@@ -102,17 +102,15 @@ class Kinematic():
     #  *****************************************************************
     def setJoints(self, ang):
         i = 0
-        print("self._sDH[i]._dof ", self._dof)
         for ai in range(self._dof):
             # min max check
-            i = self._active_index[ai]
-            if ang[ai, 0] < self._sDH[i].min:
-                self._sDH[i].theta = self._sDH[i].min
-            elif ang[ai, 0] > self._sDH[i].max:
-                self._sDH[i].theta = self._sDH[i].max
-            else:
-                self._sDH[i].theta = ang[ai, 0]
-            print("self._sDH[i].theta ", i ,self._sDH[i].theta)
+            # i = self._active_index[ai]
+            # if ang[ai, 0] < self._sDH[i].min:
+            #     self._sDH[i].theta = self._sDH[i].min
+            # elif ang[ai, 0] > self._sDH[i].max:
+            #     self._sDH[i].theta = self._sDH[i].max
+            # else:
+            self._sDH[ai].theta = ang[ai, 0]
         self._calFwd()
 
     # ******************************************************************
@@ -137,12 +135,9 @@ class Kinematic():
             self._sDH[link_index].H[1, 1] = c_theta*c_alpha
             self._sDH[link_index].H[1, 2] = -c_theta*s_alpha
             self._sDH[link_index].H[1, 3] = s_theta*self._sDH[link_index].a
-
         self._sDH[0].H0i = np.dot(self._T0, self._sDH[0].H)
-        print("self._sDH[i].H ", 0 ,self._sDH[0].H)
         for i in range(1, self._dof):
             self._sDH[i].H0i = np.dot(self._sDH[i-1].H0i, self._sDH[i].H)
-            print("self._sDH[i].H ",i,self._sDH[i].H)
 
         self._H0F = np.dot(self._sDH[self._total_links-1].H0i, self._TF)
 
