@@ -95,22 +95,26 @@ class Kinematic():
                 self._sDH[i].H[1, 2] = -c_theta*s_alpha
                 self._sDH[i].H[1, 3] = s_theta*self._sDH[i].a
 
-        self.setJoints(np.zeros((self._dof, 1)))
+        self.setJoints(np.zeros((self._dof, 1)),False)
 
     # ******************************************************************
     #  *  Set the joitn space!
     #  *****************************************************************
-    def setJoints(self, ang):
+    def setJoints(self, ang, check):
         i = 0
-        for ai in range(self._dof):
-            # min max check
-            # i = self._active_index[ai]
-            # if ang[ai, 0] < self._sDH[i].min:
-            #     self._sDH[i].theta = self._sDH[i].min
-            # elif ang[ai, 0] > self._sDH[i].max:
-            #     self._sDH[i].theta = self._sDH[i].max
-            # else:
-            self._sDH[ai].theta = ang[ai, 0]
+        if check==True:
+            for ai in range(self._dof):
+                # min max check
+                i = self._active_index[ai]
+                if ang[ai, 0] < self._sDH[i].min:
+                    self._sDH[i].theta = self._sDH[i].min
+                elif ang[ai, 0] > self._sDH[i].max:
+                    self._sDH[i].theta = self._sDH[i].max
+                else:
+                    self._sDH[ai].theta = ang[i, 0]
+        else:
+            for ai in range(self._dof):
+                self._sDH[ai].theta = ang[ai, 0]
         self._calFwd()
 
     # ******************************************************************
