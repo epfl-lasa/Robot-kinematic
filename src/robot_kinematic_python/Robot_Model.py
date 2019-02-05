@@ -173,23 +173,23 @@ class Kinematic():
         i = 0
         j = 0
         ai = 0
-        v1 = np.zeros((3, 1))
-        v2 = np.zeros((3, 1))
+        v1 = np.zeros(3)
+        v2 = np.zeros(3)
         J = np.zeros((6, self._dof))
         for ai in range(self._dof):
             i = self._active_index[ai]
             if i == 0:
                 for j in range(3):
-                    v1[j, 0] = self._T0[j, 2]
-                    v2[j, 0] = self._H0F[j, 3] - self._T0[j, 3]
+                    v1[j] = self._T0[j, 2]
+                    v2[j] = self._H0F[j, 3] - self._T0[j, 3]
 
                 J[3, ai] = self._T0[0, 2]
                 J[4, ai] = self._T0[1, 2]
                 J[5, ai] = self._T0[2, 2]
             else:
                 for j in range(3):
-                    v1[j, 0] = self._sDH[i-1].H0i[j, 2]
-                    v2[j, 0] = self._H0F[j, 3] - self._sDH[i-1].H0i[j, 3]
+                    v1[j] = self._sDH[i-1].H0i[j, 2]
+                    v2[j] = self._H0F[j, 3] - self._sDH[i-1].H0i[j, 3]
 
                 J[3, ai] = self._sDH[i-1].H0i[0, 2]
                 J[4, ai] = self._sDH[i-1].H0i[1, 2]
@@ -207,19 +207,19 @@ class Kinematic():
         i = 0
         j = 0
         ai = 0
-        v1 = np.zeros((3, 1))
-        v2 = np.zeros((3, 1))
+        v1 = np.zeros(3)
+        v2 = np.zeros(3)
         J = np.zeros((3, self._dof))
         for ai in range(self._dof):
             i = self._active_index[ai]
             if i == 0:
                 for j in range(3):
-                    v1[j, 0] = self._T0[j, 2]
-                    v2[j, 0] = self._H0F[j, 3] - self._T0[j, 3]
+                    v1[j] = self._T0[j, 2]
+                    v2[j] = self._H0F[j, 3] - self._T0[j, 3]
             else:
                 for j in range(3):
-                    v1[j, 0] = self._sDH[i-1].H0i[j, 2]
-                    v2[j, 0] = self._H0F[j, 3] - self._sDH[i-1].H0i[j, 3]
+                    v1[j] = self._sDH[i-1].H0i[j, 2]
+                    v2[j] = self._H0F[j, 3] - self._sDH[i-1].H0i[j, 3]
 
             v3 = np.cross(v1, v2)
             J[0, ai] = v3[0]
